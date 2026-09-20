@@ -1,0 +1,87 @@
+name: my-sql-database
+services:
+  db:
+    cpu_shares: 90
+    command: []
+    container_name: mysql_db
+    deploy:
+      resources:
+        limits:
+          memory: 7828M
+    environment:
+      - MYSQL_DATABASE=
+      - MYSQL_PASSWORD=
+      - MYSQL_ROOT_PASSWORD=
+      - MYSQL_USER=
+    hostname: mysql_db
+    healthcheck:
+      test:
+        - CMD
+        - mysqladmin
+        - ping
+        - -h
+        - localhost
+      timeout: 5s
+      interval: 10s
+      retries: 5
+    image: mysql:8.0
+    ports:
+      - mode: ingress
+        target: 3306
+        published: "3306"
+        protocol: tcp
+    restart: always
+    volumes:
+      - type: bind
+        source: /DATA/AppData/mysql
+        target: /mysql
+    devices: []
+    cap_add: []
+    networks:
+      - db
+    privileged: false
+  phpmyadmin:
+    cpu_shares: 90
+    command: []
+    container_name: phpmyadmin
+    depends_on:
+      db:
+        condition: service_healthy
+        required: true
+    deploy:
+      resources:
+        limits:
+          memory: 7828M
+    environment:
+      - PMA_HOST=
+      - PMA_PASSWORD=
+      - PMA_PORT=3306
+      - PMA_USER=
+    hostname: phpmyadmin
+    image: phpmyadmin:latest
+    ports:
+      - mode: ingress
+        target: 80
+        published: "8081"
+        protocol: tcp
+    restart: always
+    volumes: []
+    devices: []
+    cap_add: []
+    networks:
+      - db
+    privileged: false
+networks:
+  db:
+    name: db
+x-casaos:
+  author: self
+  category: self
+  hostname: ""
+  icon: ""
+  index: /
+  is_uncontrolled: false
+  port_map: "8081"
+  scheme: http
+  title:
+    custom: my-sql

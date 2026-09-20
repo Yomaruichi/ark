@@ -1,0 +1,65 @@
+name: rustdeskdocker
+services:
+  hbbr:
+    command:
+      - hbbr
+    container_name: hbbr
+    image: rustdesk/rustdesk-server:latest
+    restart: unless-stopped
+    volumes:
+      - type: bind
+        source: /home/yomaruichi/rustdeskdocker/data
+        target: /root
+        bind:
+          create_host_path: true
+    ports: []
+    devices: []
+    cap_add: []
+    environment: []
+    network_mode: host
+    privileged: false
+    hostname: hbbr
+    cpu_shares: 90
+    deploy:
+      resources:
+        limits:
+          memory: 7828M
+  hbbs:
+    command:
+      - hbbs
+    container_name: hbbs
+    depends_on:
+      hbbr:
+        condition: service_started
+        required: true
+    environment:
+      - ALWAYS_USE_RELAY=Y
+    image: rustdesk/rustdesk-server:latest
+    restart: unless-stopped
+    volumes:
+      - type: bind
+        source: /home/yomaruichi/rustdeskdocker/data
+        target: /root
+        bind:
+          create_host_path: true
+    ports: []
+    devices: []
+    cap_add: []
+    network_mode: host
+    privileged: false
+    hostname: hbbs
+    cpu_shares: 90
+    deploy:
+      resources:
+        limits:
+          memory: 7828M
+x-casaos:
+  hostname: ""
+  scheme: http
+  index: /
+  port_map: ""
+  author: self
+  category: self
+  icon: ""
+  title:
+    custom: ""

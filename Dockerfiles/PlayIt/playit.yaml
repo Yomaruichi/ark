@@ -1,0 +1,36 @@
+name: picturesque_pete
+services:
+  playit:
+    cpu_shares: 90
+    command: []
+    deploy:
+      resources:
+        limits:
+          memory: 7828M
+    environment:
+      - SECRET_KEY=
+    image: ghcr.io/playit-cloud/playit-agent:1.0
+    labels:
+      icon: https://icon.casaos.io/main/all/playit.png
+    restart: unless-stopped
+    ports: []
+    volumes: []
+    devices: []
+    cap_add: []
+    network_mode: host
+    privileged: false
+    container_name: ""
+    hostname: ""
+x-casaos:
+  author: self
+  category: self
+  hostname: ""
+  icon: https://icon.casaos.io/main/all/playit.png
+  index: /
+  is_uncontrolled: false
+  port_map: "2123"
+  scheme: http
+  store_app_id: picturesque_pete
+  title:
+    custom: ""
+    en_us: playit

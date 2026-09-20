@@ -1,0 +1,76 @@
+name: linuxserver-rustdesk
+services:
+  app:
+    cpu_shares: 90
+    command: []
+    deploy:
+      resources:
+        limits:
+          memory: 7828M
+    environment:
+      - PGID=1000
+      - PUID=1000
+      - TZ=Asia/Manila
+    image: linuxserver/rustdesk:1.4.2
+    labels:
+      icon: https://raw.githubusercontent.com/linuxserver/docker-templates/master/linuxserver.io/img/rustdesk-logo.png
+    ports:
+      - target: 3000
+        published: "3000"
+        protocol: tcp
+      - target: 3001
+        published: "3001"
+        protocol: tcp
+    restart: unless-stopped
+    volumes:
+      - type: bind
+        source: /srv/lsio/rustdesk/config
+        target: /config
+    x-casaos:
+      envs:
+        - container: PUID
+          description:
+            en_us: Run 'id [USER]' for the owner of the host volume directories to get the
+              UID to use here.
+        - container: PGID
+          description:
+            en_us: Run 'id [USER]' for the owner of the host volume directories to get the
+              GID to use here.
+        - container: TZ
+          description:
+            en_us: specify a timezone to use, see this list.
+    devices: []
+    cap_add: []
+    networks:
+      - default
+    privileged: false
+    container_name: ""
+    hostname: ""
+networks:
+  default:
+    name: linuxserver-rustdesk_default
+x-casaos:
+  architectures:
+    - amd64
+    - arm64
+  author: WisdomSky
+  category: LinuxServer.io
+  description:
+    en_us: RustDesk is a full-featured open source remote control alternative for
+      self-hosting and security with minimal configuration.
+  developer: LinuxServer.io
+  hostname: ""
+  icon: https://raw.githubusercontent.com/linuxserver/docker-templates/master/linuxserver.io/img/rustdesk-logo.png
+  index: /
+  is_uncontrolled: false
+  main: app
+  port_map: "3001"
+  scheme: https
+  store_app_id: linuxserver-rustdesk
+  tagline:
+    en_us: A full-featured open source remote control alternative for self-hosting
+      and security with minimal configuration.
+  thumbnail: https://raw.githubusercontent.com/linuxserver/docker-templates/master/linuxserver.io/img/rustdesk-logo.png
+  title:
+    custom: ""
+    en_us: Rustdesk

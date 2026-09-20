@@ -1,0 +1,65 @@
+name: renewed_bobo
+services:
+  musicseerr:
+    cpu_shares: 90
+    command: []
+    container_name: musicseerr
+    deploy:
+      resources:
+        limits:
+          memory: 7828M
+    environment:
+      - PGID=1000
+      - PORT=8688
+      - PUID=1000
+      - TZ= Asia/Manila
+    hostname: musicseerr
+    healthcheck:
+      test:
+        - CMD
+        - curl
+        - -f
+        - http://localhost:8688/health
+      timeout: 10s
+      interval: 30s
+      retries: 3
+      start_period: 15s
+    image: ghcr.io/habirabbu/musicseerr:latest
+    labels:
+      icon: https://icon.casaos.io/main/all/musicseerr.png
+    ports:
+      - target: 8688
+        published: "8688"
+        protocol: tcp
+    restart: unless-stopped
+    volumes:
+      - type: bind
+        source: /DATA/AppData/musicseerr/app/config
+        target: /app/config
+      - type: bind
+        source: /tmp
+        target: /app/cache
+      - type: bind
+        source: /mnt/Music
+        target: /music
+    devices: []
+    cap_add: []
+    networks:
+      - musicseerr
+    privileged: false
+networks:
+  musicseerr:
+    name: musicseerr
+x-casaos:
+  author: self
+  category: self
+  hostname: ""
+  icon: https://icon.casaos.io/main/all/musicseerr.png
+  index: /
+  is_uncontrolled: false
+  port_map: "8688"
+  scheme: http
+  store_app_id: renewed_bobo
+  title:
+    custom: musicseerr
+    en_us: musicseerr
